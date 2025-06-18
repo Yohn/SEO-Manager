@@ -1,0 +1,23 @@
+{
+	"name": "yohns/seo-manager",
+	"description": "Building the SEO meta, twitter, opengraph, and schema for your webpage",
+	"type": "library",
+	"require": {
+		"yohns/config": "^1.2"
+	},
+	"require-dev": {
+		"clean/phpdoc-md": "^0.19.3"
+	},
+	"license": "MIT",
+	"autoload": {
+		"psr-4": {
+			"Yohns\\": "Yohns/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Yohn",
+			"email": "john.skem9@gmail.com"
+		}
+	]
+}
