@@ -1,0 +1,215 @@
+<!--
+	Contents of example.php
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+<title>Welcome to Our Amazing Website</title>
+<meta name="description" content="Discover innovative solutions and services that transform your business.">
+<meta name="keywords" content="business solutions, innovation, services">
+<meta name="robots" content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://example.com">
+<link rel="icon" href="/favicon.ico">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Amazing Website">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Welcome to Our Amazing Website">
+<meta property="og:description" content="Discover innovative solutions and services that transform your business.">
+<meta property="og:image" content="https://example.com/images/og-image.jpg">
+<meta property="og:url" content="https://example.com">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yoursite">
+<meta name="twitter:title" content="Welcome to Our Amazing Website">
+<meta name="twitter:description" content="Discover innovative solutions and services that transform your business.">
+<meta name="twitter:image" content="https://example.com/images/og-image.jpg">
+<meta name="twitter:creator" content="@creator">
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Amazing Company Inc.",
+    "url": "https://example.com",
+    "logo": "https://example.com/logo.png",
+    "description": "Leading provider of innovative business solutions.",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "123 Business Ave",
+        "addressLocality": "San Francisco",
+        "addressRegion": "CA",
+        "postalCode": "94105",
+        "addressCountry": "US"
+    },
+    "telephone": "+1-555-123-4567",
+    "email": "info@example.com"
+}</script>
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Welcome to Our Amazing Website",
+    "description": "Discover innovative solutions and services that transform your business.",
+    "url": "https://example.com",
+    "publisher": {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Amazing Company Inc.",
+        "url": "https://example.com",
+        "logo": "https://example.com/logo.png",
+        "description": "Leading provider of innovative business solutions.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "123 Business Ave",
+            "addressLocality": "San Francisco",
+            "addressRegion": "CA",
+            "postalCode": "94105",
+            "addressCountry": "US"
+        },
+        "telephone": "+1-555-123-4567",
+        "email": "info@example.com"
+    }
+}</script>
+	<!-- Additional styles -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yohns/picocss@2.2.10/css/pico.min.css">
+	<style>
+		.hero {
+			text-align: center;
+			padding: 4rem 0;
+		}
+		.features {
+			margin: 4rem 0;
+		}
+		.feature-card {
+			padding: 2rem;
+			margin-bottom: 2rem;
+		}
+		pre {
+			background: #f4f4f4;
+			padding: 1rem;
+			overflow-x: auto;
+		}
+	</style>
+</head>
+<body>
+	<nav class="container-fluid">
+		<ul>
+			<li><strong>Amazing Website</strong></li>
+		</ul>
+		<ul>
+			<li><a href="#features">Features</a></li>
+			<li><a href="#example">Example</a></li>
+			<li><a href="#contact">Contact</a></li>
+		</ul>
+	</nav>
+
+	<main class="container">
+		<section class="hero">
+			<h1>SEO Manager for PHP 8.2+</h1>
+			<p>A comprehensive solution for managing all your SEO needs</p>
+		</section>
+
+		<section id="features" class="features">
+			<h2>Features</h2>
+			<div class="grid">
+				<article class="feature-card">
+					<h3>Meta Tags</h3>
+					<p>Manage title, description, keywords, canonical URLs, and more with built-in validation.</p>
+				</article>
+				<article class="feature-card">
+					<h3>Open Graph</h3>
+					<p>Full support for Open Graph protocol including articles, products, videos, and events.</p>
+				</article>
+				<article class="feature-card">
+					<h3>Twitter Cards</h3>
+					<p>Implement all Twitter Card types with proper validation and character limits.</p>
+				</article>
+				<article class="feature-card">
+					<h3>Schema Markup</h3>
+					<p>Comprehensive Schema.org support with helpers for common types and JSON-LD output.</p>
+				</article>
+			</div>
+		</section>
+
+		<section id="example">
+			<h2>Example Output</h2>
+			<p>Here's what the SEO Manager generates for this page:</p>
+			<pre><code>&lt;title&gt;Welcome to Our Amazing Website&lt;/title&gt;
+&lt;meta name=&quot;description&quot; content=&quot;Discover innovative solutions and services that transform your business.&quot;&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;business solutions, innovation, services&quot;&gt;
+&lt;meta name=&quot;robots&quot; content=&quot;index, follow&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;link rel=&quot;canonical&quot; href=&quot;https://example.com&quot;&gt;
+&lt;link rel=&quot;icon&quot; href=&quot;/favicon.ico&quot;&gt;
+&lt;meta property=&quot;og:type&quot; content=&quot;website&quot;&gt;
+&lt;meta property=&quot;og:site_name&quot; content=&quot;Amazing Website&quot;&gt;
+&lt;meta property=&quot;og:locale&quot; content=&quot;en_US&quot;&gt;
+&lt;meta property=&quot;og:title&quot; content=&quot;Welcome to Our Amazing Website&quot;&gt;
+&lt;meta property=&quot;og:description&quot; content=&quot;Discover innovative solutions and services that transform your business.&quot;&gt;
+&lt;meta property=&quot;og:image&quot; content=&quot;https://example.com/images/og-image.jpg&quot;&gt;
+&lt;meta property=&quot;og:url&quot; content=&quot;https://example.com&quot;&gt;
+&lt;meta property=&quot;og:locale:alternate&quot; content=&quot;es_ES&quot;&gt;
+&lt;meta property=&quot;og:locale:alternate&quot; content=&quot;fr_FR&quot;&gt;
+&lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt;
+&lt;meta name=&quot;twitter:site&quot; content=&quot;@yoursite&quot;&gt;
+&lt;meta name=&quot;twitter:title&quot; content=&quot;Welcome to Our Amazing Website&quot;&gt;
+&lt;meta name=&quot;twitter:description&quot; content=&quot;Discover innovative solutions and services that transform your business.&quot;&gt;
+&lt;meta name=&quot;twitter:image&quot; content=&quot;https://example.com/images/og-image.jpg&quot;&gt;
+&lt;meta name=&quot;twitter:creator&quot; content=&quot;@creator&quot;&gt;
+&lt;script type=&quot;application/ld+json&quot;&gt;{
+    &quot;@context&quot;: &quot;https://schema.org&quot;,
+    &quot;@type&quot;: &quot;Organization&quot;,
+    &quot;name&quot;: &quot;Amazing Company Inc.&quot;,
+    &quot;url&quot;: &quot;https://example.com&quot;,
+    &quot;logo&quot;: &quot;https://example.com/logo.png&quot;,
+    &quot;description&quot;: &quot;Leading provider of innovative business solutions.&quot;,
+    &quot;address&quot;: {
+        &quot;@type&quot;: &quot;PostalAddress&quot;,
+        &quot;streetAddress&quot;: &quot;123 Business Ave&quot;,
+        &quot;addressLocality&quot;: &quot;San Francisco&quot;,
+        &quot;addressRegion&quot;: &quot;CA&quot;,
+        &quot;postalCode&quot;: &quot;94105&quot;,
+        &quot;addressCountry&quot;: &quot;US&quot;
+    },
+    &quot;telephone&quot;: &quot;+1-555-123-4567&quot;,
+    &quot;email&quot;: &quot;info@example.com&quot;
+}&lt;/script&gt;
+&lt;script type=&quot;application/ld+json&quot;&gt;{
+    &quot;@context&quot;: &quot;https://schema.org&quot;,
+    &quot;@type&quot;: &quot;WebPage&quot;,
+    &quot;name&quot;: &quot;Welcome to Our Amazing Website&quot;,
+    &quot;description&quot;: &quot;Discover innovative solutions and services that transform your business.&quot;,
+    &quot;url&quot;: &quot;https://example.com&quot;,
+    &quot;publisher&quot;: {
+        &quot;@context&quot;: &quot;https://schema.org&quot;,
+        &quot;@type&quot;: &quot;Organization&quot;,
+        &quot;name&quot;: &quot;Amazing Company Inc.&quot;,
+        &quot;url&quot;: &quot;https://example.com&quot;,
+        &quot;logo&quot;: &quot;https://example.com/logo.png&quot;,
+        &quot;description&quot;: &quot;Leading provider of innovative business solutions.&quot;,
+        &quot;address&quot;: {
+            &quot;@type&quot;: &quot;PostalAddress&quot;,
+            &quot;streetAddress&quot;: &quot;123 Business Ave&quot;,
+            &quot;addressLocality&quot;: &quot;San Francisco&quot;,
+            &quot;addressRegion&quot;: &quot;CA&quot;,
+            &quot;postalCode&quot;: &quot;94105&quot;,
+            &quot;addressCountry&quot;: &quot;US&quot;
+        },
+        &quot;telephone&quot;: &quot;+1-555-123-4567&quot;,
+        &quot;email&quot;: &quot;info@example.com&quot;
+    }
+}&lt;/script&gt;</code></pre>
+		</section>
+
+		<section id="contact">
+			<h2>Get Started</h2>
+			<p>Ready to improve your website's SEO? Install the SEO Manager today!</p>
+			<pre><code>composer require yohns/seo-manager</code></pre>
+		</section>
+	</main>
+
+	<footer class="container">
+		<small>© 2024 Amazing Company Inc. All rights reserved.</small>
+	</footer>
+</body>
+</html>
