@@ -6,33 +6,72 @@ use InvalidArgumentException;
 use RuntimeException;
 
 /**
- * Favicons class for managing and generating favicon files
+ * Class Favicons
+ *
+ * Manages favicon and icon generation for various platforms including Apple, Android, Microsoft, and browsers.
+ * Supports dynamic generation from a source image using GD or ImageMagick.
+ *
+ * Example (ImageMagick):
+ * ```php
+ * $favicons = new \Yohns\SEO\Favicons([
+ * 	'base_path' => __DIR__ . '/public',
+ * 	'base_url' => '/public',
+ * 	'app_name' => 'Example App',
+ * 	'generation' => [
+ * 		//'method' => 'gd' // Uncomment and remove the following 2 lines for GD usage
+ * 		'method' => 'imagemagick',
+ * 		'imagick_path' => 'magick'
+ * 	]
+ * ]);
+ * $favicons = new \Yohns\SEO\Favicons([
+ * 	'base_path' => __DIR__ . '/public',
+ * 	'base_url' => '/public',
+ * 	'app_name' => 'Example App',
+ * 	'generation' => ['method' => 'gd']
+ * ]);
+ *
+ * $favicons->generate(__DIR__ . '/logo.png');
+ * echo $favicons->render();
+ * ```
+ * Example (GD):
+ * ```php
+ *
+ * $favicons->generate(__DIR__ . '/logo.png');
+ * echo $favicons->render();
+ * ```
+ * @package Yohns\SEO
  */
+
 class Favicons {
-	private array $icons = [];
-	private array $config = [];
+	private array  $icons    = [];
+	private array  $config   = [];
 	private string $basePath = '';
-	private string $baseUrl = '';
+	private string $baseUrl  = '';
 
 	// Standard favicon sizes (automatically generated if not found)
 	private const FAVICON_SIZES = [
-		'favicon' => ['16x16', '32x32', '48x48'],
+		'favicon'     => ['16x16', '32x32', '48x48'],
 		'apple-touch' => ['152x152', '167x167', '180x180'],
-		'android' => ['36x36', '48x48', '72x72', '96x96', '144x144', '192x192', '512x512'],
-		'mstile' => ['150x150']
+		'android'     => ['36x36', '48x48', '72x72', '96x96', '144x144', '192x192', '512x512'],
+		'mstile'      => ['150x150']
 	];
 
 	// File naming patterns (WebP format)
 	private const FILE_PATTERNS = [
-		'favicon' => 'favicon-%s.webp',
+		'favicon'     => 'favicon-%s.webp',
 		'apple-touch' => 'apple-touch-icon-%s.webp',
-		'android' => 'android-chrome-%s.webp',
-		'mstile' => 'mstile-%s.webp'
+		'android'     => 'android-chrome-%s.webp',
+		'mstile'      => 'mstile-%s.webp'
 	];
 
 	// Minimum source image size
 	private const MIN_SOURCE_SIZE = 512;
 
+	/**
+	 * Constructor to initialize Favicons with optional configuration.
+	 *
+	 * @param array $config Optional configuration for paths and icon settings.
+	 */
 	public function __construct(array $config = []) {
 		$this->config = $config;
 		$this->basePath = $config['base_path'] ?? '';
@@ -52,7 +91,10 @@ class Favicons {
 	}
 
 	/**
-	 * Set base favicon (ICO file)
+	 * Set the base favicon (.ico file).
+	 *
+	 * @param string $path Path to the favicon.ico file.
+	 * @return self
 	 */
 	public function setFavicon(string $path): self {
 		$this->icons['favicon'] = $path;
@@ -60,7 +102,11 @@ class Favicons {
 	}
 
 	/**
-	 * Set PNG/WebP favicon with size
+	 * Set a PNG or WebP icon with a specified size.
+	 *
+	 * @param string $size Icon size in WIDTHxHEIGHT format (e.g., '32x32').
+	 * @param string $path Path to the icon file.
+	 * @return self
 	 */
 	public function setPngIcon(string $size, string $path): self {
 		$this->icons['png'][$size] = $path;
@@ -68,7 +114,11 @@ class Favicons {
 	}
 
 	/**
-	 * Set Apple touch icon
+	 * Set an Apple touch icon.
+	 *
+	 * @param string $size Icon size in WIDTHxHEIGHT format (e.g., '180x180').
+	 * @param string $path Path to the Apple touch icon file.
+	 * @return self
 	 */
 	public function setAppleTouchIcon(string $size, string $path): self {
 		$this->icons['apple-touch'][$size] = $path;
@@ -76,7 +126,10 @@ class Favicons {
 	}
 
 	/**
-	 * Set Microsoft tile image
+	 * Set Microsoft tile image path.
+	 *
+	 * @param string $path Path to the MSTile image file.
+	 * @return self
 	 */
 	public function setMsTileImage(string $path): self {
 		$this->icons['mstile'] = $path;
@@ -84,7 +137,10 @@ class Favicons {
 	}
 
 	/**
-	 * Set Microsoft tile color
+	 * Set Microsoft tile color.
+	 *
+	 * @param string $color Hex or CSS color value (e.g., '#ffffff').
+	 * @return self
 	 */
 	public function setMsTileColor(string $color): self {
 		$this->icons['ms-tile-color'] = $color;
@@ -92,18 +148,25 @@ class Favicons {
 	}
 
 	/**
-	 * Set Safari pinned tab icon
+	 * Set Safari pinned tab icon path and color.
+	 *
+	 * @param string $path Path to the mask-icon SVG file.
+	 * @param string $color Hex or CSS color value.
+	 * @return self
 	 */
 	public function setSafariPinnedTab(string $path, string $color): self {
 		$this->icons['safari-pinned-tab'] = [
-			'path' => $path,
+			'path'  => $path,
 			'color' => $color
 		];
 		return $this;
 	}
 
 	/**
-	 * Set theme color
+	 * Set theme color for browser UI.
+	 *
+	 * @param string $color Hex or CSS color value.
+	 * @return self
 	 */
 	public function setThemeColor(string $color): self {
 		$this->icons['theme-color'] = $color;
@@ -111,7 +174,10 @@ class Favicons {
 	}
 
 	/**
-	 * Set web manifest path
+	 * Set the path to the web manifest file.
+	 *
+	 * @param string $path Path to the manifest.json file.
+	 * @return self
 	 */
 	public function setManifest(string $path): self {
 		$this->icons['manifest'] = $path;
@@ -125,6 +191,10 @@ class Favicons {
 	 * - Apple Touch: 152x152, 167x167, 180x180
 	 * - Android: 36x36, 48x48, 72x72, 96x96, 144x144, 192x192, 512x512
 	 * - MS Tile: 150x150
+	 *
+	 * @param string $sourceImage Path to the source image file.
+	 * @param array $options Optional generation settings: method, output_dir, types, quality.
+	 * @return array Array of generated file paths keyed by filename.
 	 */
 	public function generate(string $sourceImage, array $options = []): array {
 		if (!file_exists($sourceImage)) {
@@ -183,7 +253,11 @@ class Favicons {
 	}
 
 	/**
-	 * Check which files already exist
+	 * Check which favicon files already exist in the output directory.
+	 *
+	 * @param string $outputDir Directory to check for existing files.
+	 * @param array $types Icon types to check (e.g., 'favicon', 'apple-touch').
+	 * @return array Array of existing filenames as keys.
 	 */
 	private function checkExistingFiles(string $outputDir, array $types): array {
 		$existing = [];
@@ -207,7 +281,14 @@ class Favicons {
 	}
 
 	/**
-	 * Generate icons using GD library
+	 * Generate favicon images using the GD extension.
+	 *
+	 * @param string $sourceImage Path to the source image.
+	 * @param string $outputDir Output directory for generated icons.
+	 * @param array $types Icon types to generate.
+	 * @param int $quality WebP quality (0–100).
+	 * @param array $existingFiles Array of existing filenames to skip.
+	 * @return array Array of generated file paths keyed by filename.
 	 */
 	private function generateWithGD(
 		string $sourceImage,
@@ -228,12 +309,12 @@ class Favicons {
 		$info = getimagesize($sourceImage);
 
 		// Load source image
-		$source = match($info['mime']) {
+		$source = match ($info['mime']) {
 			'image/jpeg' => imagecreatefromjpeg($sourceImage),
-			'image/png' => imagecreatefrompng($sourceImage),
-			'image/gif' => imagecreatefromgif($sourceImage),
+			'image/png'  => imagecreatefrompng($sourceImage),
+			'image/gif'  => imagecreatefromgif($sourceImage),
 			'image/webp' => imagecreatefromwebp($sourceImage),
-			default => throw new InvalidArgumentException("Unsupported image type: {$info['mime']}")
+			default      => throw new InvalidArgumentException("Unsupported image type: {$info['mime']}")
 		};
 
 		$sourceWidth = imagesx($source);
@@ -280,8 +361,8 @@ class Favicons {
 				}
 
 				[$width, $height] = explode('x', $size);
-				$width = (int)$width;
-				$height = (int)$height;
+				$width = (int) $width;
+				$height = (int) $height;
 
 				// Only scale down, never up
 				if ($width > $sourceWidth || $height > $sourceHeight) {
@@ -323,7 +404,14 @@ class Favicons {
 	}
 
 	/**
-	 * Generate icons using ImageMagick
+	 * Generate favicon images using ImageMagick.
+	 *
+	 * @param string $sourceImage Path to the source image.
+	 * @param string $outputDir Output directory for generated icons.
+	 * @param array $types Icon types to generate.
+	 * @param int $quality WebP quality (0–100).
+	 * @param array $existingFiles Array of existing filenames to skip.
+	 * @return array Array of generated file paths keyed by filename.
 	 */
 	private function generateWithImageMagick(string $sourceImage, string $outputDir, array $types, int $quality, array $existingFiles): array {
 		$imagickPath = $this->config['generation']['imagick_path'] ?? 'convert';
@@ -352,8 +440,8 @@ class Favicons {
 		}
 
 		if (!empty($dimensions[0]) && preg_match('/(\d+)x(\d+)/', $dimensions[0], $matches)) {
-			$sourceWidth = (int)$matches[1];
-			$sourceHeight = (int)$matches[2];
+			$sourceWidth = (int) $matches[1];
+			$sourceHeight = (int) $matches[2];
 			$minDimension = min($sourceWidth, $sourceHeight);
 		} else {
 			throw new RuntimeException("Could not determine source image dimensions");
@@ -376,8 +464,8 @@ class Favicons {
 				}
 
 				[$width, $height] = explode('x', $size);
-				$width = (int)$width;
-				$height = (int)$height;
+				$width = (int) $width;
+				$height = (int) $height;
 
 				// Only scale down, never up
 				if ($width > $minDimension || $height > $minDimension) {
@@ -413,57 +501,64 @@ class Favicons {
 	}
 
 	/**
- * Generate ICO file
- */
-private function generateIco(string $sourceImage, string $outputPath, string $method): void {
-	if ($method === 'imagemagick' || $method === 'imagick') {
-		$imagickPath = $this->config['generation']['imagick_path'] ?? 'convert';
-		$cmd = sprintf(
-			'%s "%s" -resize 16x16 -resize 32x32 -resize 48x48 "%s"',
-			escapeshellcmd($imagickPath),
-			escapeshellarg($sourceImage),
-			escapeshellarg($outputPath)
-		);
-		exec($cmd);
-	} else {
-		// For GD, create ICO with multiple sizes
-		// This is a simplified version - full ICO generation is complex
-		// Generate individual PNG files first
-		$tempDir = dirname($outputPath) . '/temp_ico';
-		if (!is_dir($tempDir)) {
-			mkdir($tempDir, 0755, true);
+	 * Generate a .ico file from a source image using GD or ImageMagick.
+	 *
+	 * @param string $sourceImage Path to the source image.
+	 * @param string $outputPath Destination path for the generated .ico file.
+	 * @param string $method Method to use for generation: 'gd', 'imagick', or 'imagemagick'.
+	 */
+	private function generateIco(string $sourceImage, string $outputPath, string $method): void {
+		if ($method === 'imagemagick' || $method === 'imagick') {
+			$imagickPath = $this->config['generation']['imagick_path'] ?? 'convert';
+			$cmd = sprintf(
+				'%s "%s" -resize 16x16 -resize 32x32 -resize 48x48 "%s"',
+				escapeshellcmd($imagickPath),
+				escapeshellarg($sourceImage),
+				escapeshellarg($outputPath)
+			);
+			exec($cmd);
+		} else {
+			// For GD, create ICO with multiple sizes
+			// This is a simplified version - full ICO generation is complex
+			// Generate individual PNG files first
+			$tempDir = dirname($outputPath) . '/temp_ico';
+			if (!is_dir($tempDir)) {
+				mkdir($tempDir, 0755, true);
+			}
+
+			// Generate the required sizes for ICO
+			$this->generateWithGD($sourceImage, $tempDir, ['favicon'], 90, []);
+
+			// For now, just copy the 48x48 as favicon.ico
+			// (Full ICO generation would combine multiple sizes)
+			$favicon48 = $tempDir . '/favicon-48x48.webp';
+			if (file_exists($favicon48)) {
+				// Convert WebP to ICO (simplified - just copy for now)
+				copy($favicon48, $outputPath);
+			}
+
+			// Clean up temp files
+			array_map('unlink', glob($tempDir . '/*'));
+			rmdir($tempDir);
 		}
-
-		// Generate the required sizes for ICO
-		$this->generateWithGD($sourceImage, $tempDir, ['favicon'], 90, []);
-
-		// For now, just copy the 48x48 as favicon.ico
-		// (Full ICO generation would combine multiple sizes)
-		$favicon48 = $tempDir . '/favicon-48x48.webp';
-		if (file_exists($favicon48)) {
-			// Convert WebP to ICO (simplified - just copy for now)
-			copy($favicon48, $outputPath);
-		}
-
-		// Clean up temp files
-		array_map('unlink', glob($tempDir . '/*'));
-		rmdir($tempDir);
 	}
-}
 
 	/**
-	 * Generate web manifest file
+	 * Generate a web manifest JSON string.
+	 *
+	 * @param array $data Optional overrides for manifest properties.
+	 * @return string JSON-formatted manifest string.
 	 */
 	public function generateManifest(array $data = []): string {
 		$manifest = array_merge([
-			'name' => $data['name'] ?? $this->config['app_name'] ?? 'My App',
-			'short_name' => $data['short_name'] ?? $this->config['app_short_name'] ?? 'App',
-			'theme_color' => $this->icons['theme-color'] ?? '#ffffff',
+			'name'             => $data['name'] ?? $this->config['app_name'] ?? 'My App',
+			'short_name'       => $data['short_name'] ?? $this->config['app_short_name'] ?? 'App',
+			'theme_color'      => $this->icons['theme-color'] ?? '#ffffff',
 			'background_color' => $data['background_color'] ?? '#ffffff',
-			'display' => $data['display'] ?? 'standalone',
-			'orientation' => $data['orientation'] ?? 'portrait',
-			'start_url' => $data['start_url'] ?? '/',
-			'icons' => []
+			'display'          => $data['display'] ?? 'standalone',
+			'orientation'      => $data['orientation'] ?? 'portrait',
+			'start_url'        => $data['start_url'] ?? '/',
+			'icons'            => []
 		], $data);
 
 		// Add icons
@@ -471,9 +566,9 @@ private function generateIco(string $sourceImage, string $outputPath, string $me
 			$filename = sprintf(self::FILE_PATTERNS['android'], $size);
 			if (isset($this->icons['png'][$size])) {
 				$manifest['icons'][] = [
-					'src' => $this->icons['png'][$size],
+					'src'   => $this->icons['png'][$size],
 					'sizes' => $size,
-					'type' => 'image/png'
+					'type'  => 'image/png'
 				];
 			}
 		}
@@ -482,7 +577,9 @@ private function generateIco(string $sourceImage, string $outputPath, string $me
 	}
 
 	/**
-	 * Render favicon HTML tags
+	 * Render the HTML `<link>` and `<meta>` tags for favicons.
+	 *
+	 * @return string HTML string containing all favicon-related tags.
 	 */
 	public function render(): string {
 		$output = [];
@@ -498,9 +595,9 @@ private function generateIco(string $sourceImage, string $outputPath, string $me
 			foreach ($this->icons['png'] as $size => $path) {
 				// Determine type based on file extension
 				$ext = pathinfo($path, PATHINFO_EXTENSION);
-				$type = match(strtolower($ext)) {
-					'webp' => 'image/webp',
-					'png' => 'image/png',
+				$type = match (strtolower($ext)) {
+					'webp'  => 'image/webp',
+					'png'   => 'image/png',
 					default => 'image/png'
 				};
 
@@ -567,7 +664,9 @@ private function generateIco(string $sourceImage, string $outputPath, string $me
 	}
 
 	/**
-	 * Get all icon data as array
+	 * Export the internal icon configuration as an array.
+	 *
+	 * @return array Array of all configured icon paths and values.
 	 */
 	public function toArray(): array {
 		return $this->icons;

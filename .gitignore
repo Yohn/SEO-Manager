@@ -2,3 +2,7 @@
 /.vscode
 /vendor
 composer.lock
+
+/lib/config/vi.php
+public/icons/VI_Logo_Only.png
+a.php

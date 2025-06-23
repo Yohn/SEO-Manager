@@ -15,9 +15,9 @@ class SEOManager {
 	private Favicons     $favicons;
 	private array        $config       = [];
 
-	public function __construct(?Config $config = null) {
+	public function __construct(?Config $config = null, string $file = 'seo') {
 		if ($config) {
-			$this->config = $config::getAll('seo') ?? [];
+			$this->config = $config::getAll($file) ?? [];
 		}
 
 		$this->metaTags = new MetaTags($this->config['meta'] ?? []);

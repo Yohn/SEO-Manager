@@ -8,7 +8,7 @@
 
 	// Initialize
 	$config = new Config(__DIR__ . '/lib/config');
-	$seo = new SEOManager($config);
+	$seo = new SEOManager($config, 'vi');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,10 +17,10 @@
 <?php
 	// Set up SEO for this page
 	$seo->setCommon([
-		'title' => 'Welcome to Our Amazing Website',
+		'title' => 'Visual Impressions',
 		'description' => 'Discover innovative solutions and services that transform your business.',
-		'image' => 'https://example.com/images/og-image.jpg',
-		'url' => 'https://example.com'
+		'image' => 'https://visualimpressions.net/styles/imgs/VI_Logo_Only.png',
+		'url' => 'https://visualimpressions.net'
 	]);
 
 	// Add additional meta tags
@@ -31,27 +31,27 @@
 	// Configure Open Graph
 	$seo->openGraph()
 		->setSiteName('Amazing Website')
-		->setLocale('en_US', ['es_ES', 'fr_FR']);
+		->setLocale('en_US'); //, ['es_ES', 'fr_FR']);
 
 	// Configure Twitter
 	$seo->twitter()
-		->setCreator('@creator');
+		->setCreator('@visualimpressions');
 
 	// Add Organization schema
 	$orgSchema = $seo->schema()->organization([
 		'name' => 'Amazing Company Inc.',
-		'url' => 'https://example.com',
-		'logo' => 'https://example.com/logo.png',
+		'url' => 'https://visualimpressions.net',
+		'logo' => 'https://visualimpressions.net/styles/imgs/VI_Logo_Only.png',
 		'description' => 'Leading provider of innovative business solutions.',
 		'address' => [
-			'streetAddress' => '123 Business Ave',
-			'addressLocality' => 'San Francisco',
-			'addressRegion' => 'CA',
-			'postalCode' => '94105',
+			'streetAddress' => '606 E Hebron St',
+			'addressLocality' => 'Charlotte',
+			'addressRegion' => 'NC',
+			'postalCode' => '27203',
 			'addressCountry' => 'US'
 		],
-		'telephone' => '+1-555-123-4567',
-		'email' => 'info@example.com'
+		'telephone' => '+1-800-500-0191',
+		'email' => 'info@visualimpressions.net'
 	]);
 	$seo->schema()->add($orgSchema);
 
@@ -59,7 +59,7 @@
 	$webPageSchema = $seo->schema()->create('WebPage', [
 		'name' => 'Welcome to Our Amazing Website',
 		'description' => 'Discover innovative solutions and services that transform your business.',
-		'url' => 'https://example.com',
+		'url' => 'https://visualimpressions.net',
 		'publisher' => $orgSchema
 	]);
 	$seo->schema()->add($webPageSchema);

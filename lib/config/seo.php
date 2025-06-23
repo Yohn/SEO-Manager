@@ -29,8 +29,7 @@ return [
 		'defaults' => [
 			'organization' => [
 				'name' => 'Your Organization Name',
-				'url' => 'https://yoursite
-				.com',
+				'url' => 'https://yoursite.com',
 				'logo' => 'https://yoursite.com/logo.png'
 			]
 		]
