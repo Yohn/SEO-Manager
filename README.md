@@ -3,7 +3,21 @@
 ```cli
 composer require yohns/seo-manager
 ```
-> Not everythings been tested
+
+## Generate favicons:
+
+### Usage:
+```bash
+php ex-favicon-generator.php <path-to-512x512-image>
+```
+### Example:
+```bash
+php ex-favicon-generator.php logo.png
+```
+This will create so many favicons and the manifest file for your website.
+
+
+> Further testing would be nice, but this is within working order to get you started.
 
 ## Documentation
 

@@ -1,26 +1,33 @@
 
 <?php
-	// Include autoloader and initialize
-	require_once 'vendor/autoload.php';
+// Include autoloader and initialize
+require_once 'vendor/autoload.php';
 
-	use Yohns\Core\Config;
-	use Yohns\SEO\SEOManager;
+use Yohns\Core\Config;
+use Yohns\SEO\SEOManager;
 
-	// Initialize
-	$config = new Config(__DIR__ . '/lib/config');
-	$seo = new SEOManager($config, 'vi');
+// Initialize
+$config = new Config(__DIR__ . '/lib/config');
+$seo = new SEOManager($config, 'vi');
+
+$title = 'My Amazing Website';
+$description = 'Discover innovative solutions and services that transform your business.';
+$keywords = 'favicon, seo, web development';
+$image = 'https://yoursite.com/Logo-512x.jpg';
+$url = 'https://yoursite.com';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 <?php
+
 	// Set up SEO for this page
 	$seo->setCommon([
-		'title' => 'Visual Impressions',
-		'description' => 'Discover innovative solutions and services that transform your business.',
-		'image' => 'https://visualimpressions.net/styles/imgs/VI_Logo_Only.png',
-		'url' => 'https://visualimpressions.net'
+		'title' => $title,
+		'description' => $description,
+		'image' => $image,
+		'url' => $url
 	]);
 
 	// Add additional meta tags
@@ -30,36 +37,36 @@
 
 	// Configure Open Graph
 	$seo->openGraph()
-		->setSiteName('Amazing Website')
+		->setSiteName($title)
 		->setLocale('en_US'); //, ['es_ES', 'fr_FR']);
 
 	// Configure Twitter
-	$seo->twitter()
-		->setCreator('@visualimpressions');
+	//$seo->twitter()
+	//	->setCreator('@creator');
 
 	// Add Organization schema
 	$orgSchema = $seo->schema()->organization([
-		'name' => 'Amazing Company Inc.',
-		'url' => 'https://visualimpressions.net',
-		'logo' => 'https://visualimpressions.net/styles/imgs/VI_Logo_Only.png',
-		'description' => 'Leading provider of innovative business solutions.',
+		'name' => $title,
+		'url' => $url,
+		'logo' => $image,
+		'description' => $description,
 		'address' => [
-			'streetAddress' => '606 E Hebron St',
-			'addressLocality' => 'Charlotte',
+			'streetAddress' => '123 N. Main St.',
+			'addressLocality' => 'City',
 			'addressRegion' => 'NC',
-			'postalCode' => '27203',
+			'postalCode' => '12345',
 			'addressCountry' => 'US'
 		],
-		'telephone' => '+1-800-500-0191',
-		'email' => 'info@visualimpressions.net'
+		'telephone' => '+1-800-500-0000',
+		'email' => 'info@yoursite.com'
 	]);
 	$seo->schema()->add($orgSchema);
 
 	// Add WebPage schema
 	$webPageSchema = $seo->schema()->create('WebPage', [
-		'name' => 'Welcome to Our Amazing Website',
-		'description' => 'Discover innovative solutions and services that transform your business.',
-		'url' => 'https://visualimpressions.net',
+		'name' => $title,
+		'description' => $description,
+		'url' => $url,
 		'publisher' => $orgSchema
 	]);
 	$seo->schema()->add($webPageSchema);

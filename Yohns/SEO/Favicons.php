@@ -545,6 +545,7 @@ class Favicons {
 
 	/**
 	 * Generate a web manifest JSON string.
+	 * Fixed to properly detect file format (WebP vs PNG) from actual file paths
 	 *
 	 * @param array $data Optional overrides for manifest properties.
 	 * @return string JSON-formatted manifest string.
@@ -561,14 +562,28 @@ class Favicons {
 			'icons'            => []
 		], $data);
 
-		// Add icons
+		// Add icons with proper MIME type detection
 		foreach (self::FAVICON_SIZES['android'] as $size) {
 			$filename = sprintf(self::FILE_PATTERNS['android'], $size);
+
+			// Check if we have this icon registered
 			if (isset($this->icons['png'][$size])) {
+				$iconPath = $this->icons['png'][$size];
+
+				// Detect file format from extension
+				$extension = strtolower(pathinfo($iconPath, PATHINFO_EXTENSION));
+				$mimeType = match ($extension) {
+					'webp'  => 'image/webp',
+					'png'   => 'image/png',
+					'jpg', 'jpeg' => 'image/jpeg',
+					default => 'image/png' // fallback
+				};
+
 				$manifest['icons'][] = [
-					'src'   => $this->icons['png'][$size],
+					'src'   => $iconPath,
 					'sizes' => $size,
-					'type'  => 'image/png'
+					'type'  => $mimeType,
+					'purpose' => 'any' // Supports both maskable and any
 				];
 			}
 		}
