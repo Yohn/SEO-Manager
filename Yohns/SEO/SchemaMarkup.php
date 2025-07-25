@@ -496,7 +496,6 @@ class SchemaMarkup {
 		$this->schemas = [];
 		return $this;
 	}
-
 	/**
 	 * Set context for schemas
 	 */
@@ -504,11 +503,22 @@ class SchemaMarkup {
 		$this->context = $context;
 		return $this;
 	}
-
 	/**
 	 * Get current context
 	 */
 	public function getContext(): string {
 		return $this->context;
+	}
+	/**
+	 * Get all schemas
+	 */
+	public function getSchemas(): array {
+		return $this->schemas;
+	}
+	/**
+	 * Get config
+	 */
+	public function getConfig(): array {
+		return $this->config;
 	}
 }
